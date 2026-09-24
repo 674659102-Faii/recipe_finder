@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: () {},
                     child: const Text(
-                      'สมัครสมาชิก',
+                      'สมัครสมาชิก ',
                       style: TextStyle(
                         color: Colors.orange,
                         fontWeight: FontWeight.bold,
