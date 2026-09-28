@@ -11,6 +11,140 @@ class MealPlannerScreen extends StatefulWidget {
 
 class _MealPlannerScreenState extends State<MealPlannerScreen> {
   int _selectedDay = 28; // Default selected day (e.g. 28)
+  String _selectedMonth = 'กันยายน'; // Default selected month
+
+  final List<String> _months = [
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
+  ];
+
+  // Key: "Month-Day", Value: Map of meal time to recipe name
+  final Map<String, Map<String, String>> _mealPlans = {};
+
+  final List<String> _availableRecipes = [
+    'ข้าวไก่ย่างซอสเทอริยากิ (20 นาที)',
+    'สลัดโรลไก่ย่างกับขนมปังโฮลวีต (15 นาที)',
+    'ข้าวผัดกุ้งไข่เยิ้มผักรวม (15 นาที)',
+    'ข้าวแซลมอนย่างผักรวม (25 นาที)',
+  ];
+
+  void _showMonthPicker() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'เลือกเดือน',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: _months.length,
+                  itemBuilder: (context, index) {
+                    final month = _months[index];
+                    final isSelected = month == _selectedMonth;
+                    return ListTile(
+                      title: Text(
+                        month,
+                        style: TextStyle(
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? Colors.orange : Colors.black87,
+                        ),
+                      ),
+                      trailing: isSelected ? const Icon(Icons.check, color: Colors.orange) : null,
+                      onTap: () {
+                        setState(() {
+                          _selectedMonth = month;
+                        });
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showRecipeSelector(String mealTime) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'เลือกสูตรอาหารสำหรับ$mealTime (วันที่ $_selectedDay $_selectedMonth)',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  itemCount: _availableRecipes.length,
+                  itemBuilder: (context, index) {
+                    final recipe = _availableRecipes[index];
+                    return ListTile(
+                      leading: const Icon(Icons.restaurant, color: Colors.orange),
+                      title: Text(recipe),
+                      onTap: () {
+                        final key = '$_selectedMonth-$_selectedDay';
+                        setState(() {
+                          if (!_mealPlans.containsKey(key)) {
+                            _mealPlans[key] = {};
+                          }
+                          _mealPlans[key]![mealTime] = recipe;
+                        });
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('เพิ่ม $recipe ใน$mealTime เรียบร้อย!')),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,17 +188,30 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'กันยายน 2024',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                        InkWell(
+                          onTap: _showMonthPicker,
+                          borderRadius: BorderRadius.circular(8),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '$_selectedMonth 2024',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.arrow_drop_down, color: Colors.orange),
+                              ],
+                            ),
                           ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.calendar_month, color: Colors.orange),
-                          onPressed: () {},
+                          onPressed: _showMonthPicker,
                         ),
                       ],
                     ),
@@ -136,7 +283,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'แผนมื้ออาหาร (วันที่ $_selectedDay กันยายน 2024)',
+                    'แผนมื้ออาหาร (วันที่ $_selectedDay $_selectedMonth 2024)',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -149,9 +296,9 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
               Expanded(
                 child: ListView(
                   children: [
-                    _buildMealSlot('มื้อเช้า', 'ยังไม่ได้วางแผนสำหรับวันที่ $_selectedDay', Icons.wb_sunny_outlined),
-                    _buildMealSlot('มื้อกลางวัน', 'ตัวอย่างสูตรอาหาร 1 (15 นาที)', Icons.lunch_dining),
-                    _buildMealSlot('มื้อเย็น', 'ยังไม่ได้วางแผนสำหรับวันที่ $_selectedDay', Icons.dinner_dining),
+                    _buildMealSlot('มื้อเช้า', Icons.wb_sunny_outlined),
+                    _buildMealSlot('มื้อกลางวัน', Icons.lunch_dining),
+                    _buildMealSlot('มื้อเย็น', Icons.dinner_dining),
                   ],
                 ),
               ),
@@ -164,7 +311,7 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('สร้างรายการซื้อของสำหรับวันที่ $_selectedDay กันยายนเรียบร้อย!'),
+                        content: Text('สร้างรายการซื้อของสำหรับวันที่ $_selectedDay $_selectedMonth เรียบร้อย!'),
                       ),
                     );
                   },
@@ -193,58 +340,69 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
     );
   }
 
-  Widget _buildMealSlot(String mealTime, String mealName, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.orange.shade50,
-              shape: BoxShape.circle,
+  Widget _buildMealSlot(String mealTime, IconData icon) {
+    final key = '$_selectedMonth-$_selectedDay';
+    final currentMeal = _mealPlans[key]?[mealTime] ?? 'ยังไม่ได้วางแผนสำหรับวันที่ $_selectedDay $_selectedMonth';
+    final hasMeal = _mealPlans[key]?.containsKey(mealTime) ?? false;
+
+    return InkWell(
+      onTap: () => _showRecipeSelector(mealTime),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
-            child: Icon(icon, color: Colors.orange),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  mealTime,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  mealName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: Colors.orange),
             ),
-          ),
-          const Icon(Icons.add_circle_outline, color: Colors.orange),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    mealTime,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    currentMeal,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: hasMeal ? Colors.orange.shade800 : Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              hasMeal ? Icons.check_circle : Icons.add_circle_outline,
+              color: hasMeal ? Colors.green : Colors.orange,
+            ),
+          ],
+        ),
       ),
     );
   }

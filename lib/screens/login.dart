@@ -48,13 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
+                  color: Colors.purple.shade50,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.restaurant_menu,
                   size: 64,
-                  color: Colors.orange,
+                  color: Colors.purple.shade300,
                 ),
               ),
               const SizedBox(height: 16),
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'อีเมล',
                   hintText: 'กรอกอีเมลของคุณ',
-                  prefixIcon: const Icon(Icons.email_outlined),
+                  prefixIcon: Icon(Icons.email_outlined, color: Colors.purple.shade300),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -91,10 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'รหัสผ่าน',
                   hintText: 'กรอกรหัสผ่านของคุณ',
-                  prefixIcon: const Icon(Icons.lock_outline),
+                  prefixIcon: Icon(Icons.lock_outline, color: Colors.purple.shade300),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.purple.shade300,
                     ),
                     onPressed: () {
                       setState(() {
@@ -115,9 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: const Text(
+                  child: Text(
                     'ลืมรหัสผ่านใช่ไหม?',
-                    style: TextStyle(color: Colors.orange),
+                    style: TextStyle(color: Colors.purple.shade300),
                   ),
                 ),
               ),
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Colors.purple.shade300,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -163,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {},
-                    child: const Text(
-                      'สมัครสมาชิก ',
+                    child: Text(
+                      'สมัครสมาชิก',
                       style: TextStyle(
-                        color: Colors.orange,
+                        color: Colors.purple.shade300,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

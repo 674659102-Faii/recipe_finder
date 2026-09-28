@@ -8,14 +8,14 @@ class CategorierScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> categories = [
-      {'name': 'อาหารเพื่อสุขภาพ', 'icon': Icons.favorite, 'color': Colors.green},
-      {'name': 'อาหารจานด่วน', 'icon': Icons.flash_on, 'color': Colors.amber},
-      {'name': 'อาหารไทย', 'icon': Icons.restaurant_menu, 'color': Colors.orange},
-      {'name': 'อาหารนานาชาติ', 'icon': Icons.public, 'color': Colors.blue},
-      {'name': 'อาหารมังสวิรัติ', 'icon': Icons.eco, 'color': Colors.lightGreen},
-      {'name': 'ของหวาน', 'icon': Icons.cake, 'color': Colors.pink},
-      {'name': 'อาหารเช้า', 'icon': Icons.free_breakfast, 'color': Colors.deepOrange},
-      {'name': 'ซุป', 'icon': Icons.soup_kitchen, 'color': Colors.brown},
+      {'name': 'อาหารเพื่อสุขภาพ', 'icon': Icons.favorite, 'color': Colors.pinkAccent},
+      {'name': 'อาหารจานด่วน', 'icon': Icons.flash_on, 'color': Colors.pink},
+      {'name': 'อาหารไทย', 'icon': Icons.restaurant_menu, 'color': Colors.redAccent},
+      {'name': 'อาหารนานาชาติ', 'icon': Icons.public, 'color': Colors.pink.shade400},
+      {'name': 'อาหารมังสวิรัติ', 'icon': Icons.eco, 'color': Colors.purpleAccent},
+      {'name': 'ของหวาน', 'icon': Icons.cake, 'color': Colors.pink.shade300},
+      {'name': 'อาหารเช้า', 'icon': Icons.free_breakfast, 'color': Colors.deepOrangeAccent},
+      {'name': 'ซุป', 'icon': Icons.soup_kitchen, 'color': Colors.pink.shade600},
     ];
 
     return Scaffold(
@@ -49,7 +49,10 @@ class CategorierScreen extends StatelessWidget {
               return InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('เลือกหมวดหมู่: ${cat['name']}')),
+                    SnackBar(
+                      content: Text('คุณเลือกหมวดหมู่: ${cat['name']}'),
+                      backgroundColor: Colors.pink.shade400,
+                    ),
                   );
                 },
                 borderRadius: BorderRadius.circular(16),
@@ -71,7 +74,7 @@ class CategorierScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: (cat['color'] as Color).withOpacity(0.1),
+                          color: (cat['color'] as Color).withOpacity(0.15),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(

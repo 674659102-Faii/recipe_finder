@@ -9,10 +9,10 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> favoriteRecipes = [
-      {'name': 'สูตรอาหารโปรด 1', 'time': '15 นาที'},
-      {'name': 'สูตรอาหารโปรด 2', 'time': '20 นาที'},
-      {'name': 'สูตรอาหารโปรด 3', 'time': '25 นาที'},
-      {'name': 'สูตรอาหารโปรด 4', 'time': '15 นาที'},
+      {'name': 'ข้าวไก่ย่างซอสเทอริยากิ', 'time': '20 นาที'},
+      {'name': 'สลัดโรลไก่ย่างกับขนมปังโฮลวีต', 'time': '15 นาที'},
+      {'name': 'ข้าวผัดกุ้งไข่เยิ้มผักรวม', 'time': '15 นาที'},
+      {'name': 'ข้าวแซลมอนย่างผักรวม', 'time': '25 นาที'},
     ];
 
     return Scaffold(
@@ -56,12 +56,12 @@ class FavoritesScreen extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.orange.shade100,
+                      color: Colors.purple.shade50,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.restaurant,
-                      color: Colors.orange,
+                      color: Colors.purple.shade300,
                     ),
                   ),
                   title: Text(

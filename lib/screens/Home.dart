@@ -8,6 +8,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> recipes = [
+      {'name': 'ข้าวไก่ย่างซอสเทอริยากิ', 'time': '20 นาที'},
+      {'name': 'สลัดโรลไก่ย่างกับขนมปังโฮลวีต', 'time': '15 นาที'},
+      {'name': 'ข้าวผัดกุ้งไข่เยิ้มผักรวม', 'time': '15 นาที'},
+      {'name': 'ข้าวแซลมอนย่างผักรวม', 'time': '25 นาที'},
+    ];
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -25,11 +32,11 @@ class HomeScreen extends StatelessWidget {
         actions: [
           TextButton.icon(
             onPressed: () {},
-            icon: const Icon(Icons.add, color: Colors.orange),
-            label: const Text(
+            icon: Icon(Icons.add, color: Colors.purple.shade300),
+            label: Text(
               'เพิ่ม',
               style: TextStyle(
-                color: Colors.orange,
+                color: Colors.purple.shade300,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -46,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'ค้นหาสูตรอาหาร...',
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: Colors.purple.shade300),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -70,8 +77,9 @@ class HomeScreen extends StatelessWidget {
               // Recipe List
               Expanded(
                 child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: recipes.length,
                   itemBuilder: (context, index) {
+                    final recipe = recipes[index];
                     return Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
@@ -91,30 +99,30 @@ class HomeScreen extends StatelessWidget {
                           width: 60,
                           height: 60,
                           decoration: BoxDecoration(
-                            color: Colors.orange.shade100,
+                            color: Colors.purple.shade50,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.restaurant,
-                            color: Colors.orange,
+                            color: Colors.purple.shade300,
                           ),
                         ),
                         title: Text(
-                          'ตัวอย่างสูตรอาหาร ${index + 1}',
+                          recipe['name']!,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        subtitle: const Padding(
-                          padding: EdgeInsets.only(top: 6.0),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 6.0),
                           child: Row(
                             children: [
-                              Icon(Icons.timer, size: 16, color: Colors.grey),
-                              SizedBox(width: 4),
+                              const Icon(Icons.timer, size: 16, color: Colors.grey),
+                              const SizedBox(width: 4),
                               Text(
-                                '15 นาที',
-                                style: TextStyle(color: Colors.grey),
+                                recipe['time']!,
+                                style: const TextStyle(color: Colors.grey),
                               ),
                             ],
                           ),
@@ -129,7 +137,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailScreen(
-                                recipeName: 'ตัวอย่างสูตรอาหาร ${index + 1}',
+                                recipeName: recipe['name']!,
                               ),
                             ),
                           );
